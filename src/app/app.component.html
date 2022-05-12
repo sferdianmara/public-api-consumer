@@ -1,0 +1,42 @@
+<div>
+  <mat-card>
+    <mat-card-title>Cat fact of the day</mat-card-title>
+    <div *ngIf="!catFact">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div *ngIf="catFact">
+      {{catFact}}
+    </div>
+    <mat-card-actions>
+      <button mat-button (click)="getCatFact()" [disabled]="!catFact">Another fact</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Bitcoin price</mat-card-title>
+    <div *ngIf="priceLoading">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div *ngIf="bitcoinPrice">
+      <div *ngIf="trend === true">Bitcoin price has gone up since last check!</div>
+      <div *ngIf="trend === false">Bitcoin price has gone down since last check!</div>
+      <ul>
+        <li *ngFor="let currencyData of bitcoinPrice.currencies">
+          {{currencyData.description}} ({{currencyData.code}}): {{currencyData.value}}
+        </li>
+      </ul>
+    </div>
+    <mat-card-actions>
+      <button mat-button (click)="getBitcoinPrice()" [disabled]="priceLoading">Refresh</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Gender prediction</mat-card-title>
+    <input matInput [(ngModel)]="genderizeNameInput"/>
+    <mat-card-actions>
+      <button mat-button (click)="genderizeNameEmitter.next(genderizeNameInput)">Submit name</button>
+    </mat-card-actions>
+    <div *ngIf="nameGenderResult">Predicted gender: {{nameGenderResult}}</div>
+  </mat-card>
+</div>
