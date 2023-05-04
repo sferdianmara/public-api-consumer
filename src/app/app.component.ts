@@ -4,6 +4,7 @@ import {BitcoinPrice} from "./model/bitcoin-price";
 import {BitcoinPriceService} from "./api/bitcoin-price.service";
 import {interval, map, mergeMap, Subject, Subscription, switchMap, takeUntil} from "rxjs";
 import {GenderizeService} from "./api/genderize.service";
+import {MyService} from "../my.service";
 
 
 @Component({
@@ -27,12 +28,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public constructor(private catFactApiService: CatFactApiService,
                      private bitcoinPriceService: BitcoinPriceService,
-                     private genderizeService: GenderizeService) {
+                     private genderizeService: GenderizeService,
+                     private myService: MyService) {
   }
 
   public ngOnInit() {
-    interval(20000).subscribe(() => this.getCatFact());
-    interval(60000).subscribe(() => this.getBitcoinPrice());
+    interval(20000).pipe(
+      takeUntil(this.ngDestroyed$)
+    ).subscribe(() => this.getCatFact());
+    interval(60000).pipe(
+      takeUntil(this.ngDestroyed$)
+    ).subscribe(() => this.getBitcoinPrice());
     this.getCatFact();
     this.getBitcoinPrice();
     // with subscription
@@ -53,6 +59,8 @@ export class AppComponent implements OnInit, OnDestroy {
     //   this.genderizeNameEmitter.pipe(
     //     map(name => this.genderizeService.getGenderPrediction(name))
     //   ).subscribe(result => result.subscribe(gender => this.nameGenderResult = gender));
+
+    this.myService.loadUser(['Ana', 'Marius', 'Bob', 'Cristi', 'Maria']).subscribe(res => console.log(res));
   }
 
   public ngOnDestroy() {
@@ -73,6 +81,11 @@ export class AppComponent implements OnInit, OnDestroy {
     ).subscribe((fact) => {
       this.catFact = fact;
     });
+  }
+
+  public onClickGetCatFact() {
+     // TODO 2: Does this work? Why / why not?
+     this.getCatFact();
   }
 
   public getBitcoinPrice() {

@@ -14,6 +14,7 @@ export class BitcoinPriceService {
   }
 
   public getBitcoinPrice(): Observable<BitcoinPrice> {
+    // TODO 4: What's the correct return type of this function? Why do you think this logic might be needed?
     return this.http.get<BitcoinPriceApiResponse>(this.API_URL).pipe(
       map(response => {
         const res: BitcoinPrice = {currencies: [], timestamp: response.time.updatedISO};

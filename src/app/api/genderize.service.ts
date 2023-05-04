@@ -13,8 +13,10 @@ export class GenderizeService {
   }
 
   public getGenderPrediction(name: string): Observable<string> {
+    // TODO 3: We're only interested in the 'gender' attribute. How can we produce this output?
+    // Bonus: Add the correct return type of the function.
     return this.http.get<GenderizeApiResponse>(`${this.API_URL}?name=${name}`).pipe(
-      map(response => response.gender)
+      map((res: GenderizeApiResponse) => res.gender)
     );
   }
 }
