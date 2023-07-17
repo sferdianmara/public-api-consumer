@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CatFactApiService} from "./api/cat-fact-api.service";
 import {BitcoinPrice} from "./model/bitcoin-price";
 import {BitcoinPriceService} from "./api/bitcoin-price.service";
-import {interval, map, mergeMap, Subject, Subscription, switchMap, takeUntil} from "rxjs";
+import {interval, Subject, Subscription, switchMap, takeUntil} from "rxjs";
 import {GenderizeService} from "./api/genderize.service";
 import {MyService} from "../my.service";
 
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.genderizeNameEmitter.pipe(
       takeUntil(this.ngDestroyed$),
       switchMap(name => this.genderizeService.getGenderPrediction(name))
-    ).subscribe(gender => this.nameGenderResult = gender);
+    ).subscribe((gender: string) => this.nameGenderResult = gender);
 
     // an ugly example with nested subscribe; to avoid this, we use unpack operators
     // (mergeMap, switchMap, concatMap, etc) depending on the case
